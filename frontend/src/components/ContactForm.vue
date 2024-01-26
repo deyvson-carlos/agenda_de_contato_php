@@ -17,13 +17,14 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <router-link to="/" class="nav-link" exact-active-class>Home</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Lista de Contatos</a>
+              <router-link to="/contactlist" class="nav-link" exact-active-class>Lista de Contatos</router-link>
             </li>
           </ul>
         </div>
@@ -222,23 +223,36 @@ export default {
     },
 
     saveContact() {
-      console.log("Dados do formulário:", this.formData);
-      // Exemplo usando Fetch
-      fetch("http://localhost:8080/api/contacts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.formData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Erro ao salvar contato:", error);
-        });
+  console.log("Dados do formulário:", this.formData);
+  // Exemplo usando Fetch
+  fetch("http://localhost:8080/api/contacts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify(this.formData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // Após salvar com sucesso, navegue para a página ContactList manualmente
+      this.$router.push("/contactlist");
+    })
+    .catch((error) => {
+      console.error("Erro ao salvar contato:", error);
+    });
+}
+
   },
 };
 </script>
+
+<style>
+.nav-item a.custom-link-exact-active,
+.nav-item a.custom-link-active {
+  text-decoration: none;
+  color: gray;
+}
+
+
+</style>

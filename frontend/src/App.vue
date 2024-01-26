@@ -6,13 +6,15 @@
 </template>
 
 <script>
-import ContactList from './components/ContactList.vue';
-import ContactForm from './components/ContactForm.vue';
+import ContactForm from '../src/components/ContactForm.vue';
+import ContactList from '../src/components/ContactList.vue';
+
 
 export default {
   components: {
-    ContactList,
     ContactForm,
+    ContactList,
+    
   },
   data() {
     return {
