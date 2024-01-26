@@ -1,4 +1,3 @@
-<!-- src/App.vue -->
 <template>
   <div id="app">
     <contact-form @contactSaved="getContacts" />
@@ -22,7 +21,7 @@ export default {
   },
   methods: {
     getContacts() {
-      // Implemente a lógica para obter a lista de contatos da API, se necessário
+      // Implemente a lógica para obter a lista de contatos da API
     },
   },
 };
