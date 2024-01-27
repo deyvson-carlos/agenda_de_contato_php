@@ -21,10 +21,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <router-link to="/" class="nav-link" exact-active-class>Home</router-link>
+              <router-link to="/" class="nav-link" exact-active-class
+                >Home</router-link
+              >
             </li>
             <li class="nav-item">
-              <router-link to="/contactlist" class="nav-link" exact-active-class>Lista de Contatos</router-link>
+              <router-link to="/contactlist" class="nav-link" exact-active-class
+                >Lista de Contatos</router-link
+              >
             </li>
           </ul>
         </div>
@@ -164,7 +168,7 @@
       class="card-footer text-muted text-center"
       style="background-color: #5eb7f3; color: white"
     >
-      <p style="margin-top: 40px">
+      <p style="margin-top: 66px">
         © {{ formData.currentYear }} Deyvson Carlos.
       </p>
     </div>
@@ -190,15 +194,12 @@ export default {
   methods: {
     fetchAddress() {
       if (this.formData.cep.length === 8) {
-        // Chama a API do ViaCEP para obter dados do endereço
         fetch(`https://viacep.com.br/ws/${this.formData.cep}/json/`)
           .then((response) => response.json())
           .then((data) => {
             if (!data.erro) {
-              // Preenche os campos da cidade, rua e outros dados do endereço
               this.formData.city = data.localidade;
               this.formData.street = data.logradouro;
-              // Adicione aqui mais campos que deseja preencher automaticamente
             }
           })
           .catch((error) => {
@@ -207,11 +208,10 @@ export default {
       }
     },
     addPhone() {
-      // Adicione o número apenas se for composto por dígitos
-      const numericPhone = this.phoneInput.replace(/\D/g, ""); // Remove caracteres não numéricos
+      const numericPhone = this.phoneInput.replace(/\D/g, "");
       if (numericPhone.length > 0) {
         this.formData.phones.push(numericPhone);
-        this.phoneInput = ""; // Limpa o campo após adicionar
+        this.phoneInput = "";
       }
     },
     removePhone(index) {
@@ -223,26 +223,24 @@ export default {
     },
 
     saveContact() {
-  console.log("Dados do formulário:", this.formData);
-  // Exemplo usando Fetch
-  fetch("http://localhost:8080/api/contacts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+      console.log("Dados do formulário:", this.formData);
+      fetch("http://localhost:8000/backend/createContact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Após salvar com sucesso, navegue para a página ContactList manualmente
+          this.$router.push("/contact-list");
+        })
+        .catch((error) => {
+          console.error("Erro ao salvar contato:", error.message);
+        });
     },
-    body: JSON.stringify(this.formData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      // Após salvar com sucesso, navegue para a página ContactList manualmente
-      this.$router.push("/contactlist");
-    })
-    .catch((error) => {
-      console.error("Erro ao salvar contato:", error);
-    });
-}
-
   },
 };
 </script>
@@ -253,6 +251,4 @@ export default {
   text-decoration: none;
   color: gray;
 }
-
-
 </style>

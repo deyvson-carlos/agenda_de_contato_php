@@ -1,29 +1,19 @@
 <template>
   <div id="app">
-    <contact-form @contactSaved="getContacts" />
-    <contact-list v-if="showContactList" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import ContactForm from '../src/components/ContactForm.vue';
-import ContactList from '../src/components/ContactList.vue';
-
-
 export default {
-  components: {
-    ContactForm,
-    ContactList,
-    
-  },
   data() {
     return {
-      showContactList: false,
+      contacts: [], 
     };
   },
   methods: {
-    getContacts() {
-      // Implemente a lógica para obter a lista de contatos da API
+    updateContacts(newContacts) {
+      this.contacts = newContacts;
     },
   },
 };

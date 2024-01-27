@@ -1,6 +1,10 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Max-Age: 3600"); // Tempo em segundos que as informações podem ser cacheadas
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use ContactAgenda\Controller\ContactController;
 
@@ -9,7 +13,7 @@ $username = "root";
 $password = "";
 $dbname = "agenda_contatos";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Erro na conexão com o banco de dados: " . $conn->connect_error);
@@ -17,10 +21,10 @@ if ($conn->connect_error) {
 
 $contactController = new ContactController($conn);
 
-header("Access-Control-Allow-Origin: http://localhost:8080/");
-header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
+// header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-Type");
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     
