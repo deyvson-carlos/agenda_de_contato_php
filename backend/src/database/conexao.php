@@ -2,9 +2,9 @@
 
 function conectarBancoDeDados() {
     $hostname = 'localhost';
-    $dbname = 'seu_banco_de_dados';
-    $username = 'seu_usuario';
-    $password = 'sua_senha';
+    $dbname = 'agenda_contatos';
+    $username = 'root';
+    $password = '';
 
     try {
         // Tentar estabelecer a conexão com o banco de dados

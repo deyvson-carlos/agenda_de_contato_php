@@ -235,7 +235,7 @@ export default {
         .then((data) => {
           console.log(data);
           // Após salvar com sucesso, navegue para a página ContactList manualmente
-          this.$router.push("/contact-list");
+          this.$router.push("/contactlist");
         })
         .catch((error) => {
           console.error("Erro ao salvar contato:", error.message);
