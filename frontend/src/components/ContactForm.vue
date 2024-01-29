@@ -42,7 +42,7 @@
         </div>
 
         <div class="card-body">
-          <form @submit.prevent="saveContact">
+          <form method="POST" @submit.prevent="saveContact">
             <div class="row">
               <div class="col-md-6">
                 <label for="inputName" class="form-label">Nome</label>
@@ -223,24 +223,35 @@ export default {
     },
 
     saveContact() {
-      console.log("Dados do formulário:", this.formData);
-      fetch("http://localhost:8000/backend/createContact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.formData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          // Após salvar com sucesso, navegue para a página ContactList manualmente
-          this.$router.push("/contactlist");
-        })
-        .catch((error) => {
-          console.error("Erro ao salvar contato:", error.message);
-        });
+  console.log("Dados do formulário:", this.formData);
+  fetch("http://localhost:8000/createContact", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify(this.formData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      // Verifica se a resposta indica sucesso
+      if (data && data.message === "Contato inserido com sucesso!") {
+        // Exibe um alerta com a mensagem de sucesso
+        alert("Contato salvo com sucesso!");
+
+        // Você pode optar por limpar o formulário ou realizar outras ações aqui
+
+        // Se preferir, não redirecione automaticamente para a página ContactList
+        // this.$router.push("/contactlist");
+      } else {
+        console.error("Erro ao salvar contato:", data.error || "Erro desconhecido");
+      }
+    })
+    .catch((error) => {
+      console.error("Erro ao salvar contato:", error.message);
+    });
+},
+
   },
 };
 </script>

@@ -48,42 +48,68 @@ class Contact_model
         }
     }
 
+    public function getAllContacts()
+{
+    try {
+        $stmt = $this->pdo->prepare("SELECT * FROM contacts");
+        $stmt->execute();
+        $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // public function updateContact($id, $name, $email, $phones, $street, $city, $state, $cep)
-    // {
-    //     $sql = "UPDATE contacts SET name=?, email=?, phones=?, street=?, city=?, state=?, cep=? WHERE id=?";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->bind_param("sssssssi", $name, $email, $phones, $street, $city, $state, $cep, $id);
-
-    //     if ($stmt->execute()) {
-    //         return "Contato atualizado com sucesso!";
-    //     } else {
-    //         return "Erro ao atualizar contato: " . $stmt->error;
-    //     }
-    // }
-
-    // public function getContacts()
-    // {
-    //     $sql = "SELECT * FROM contacts";
-    //     $result = $this->conn->query($sql);
-
-    //     if ($result) {
-    //         return $result->fetch_all(MYSQLI_ASSOC);
-    //     } else {
-    //         return "Erro ao obter contatos: " . $this->conn->error;
-    //     }
-    // }
-
-    // public function deleteContact($id)
-    // {
-    //     $sql = "DELETE FROM contacts WHERE id=?";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->bind_param("i", $id);
-
-    //     if ($stmt->execute()) {
-    //         return "Contato excluído com sucesso!";
-    //     } else {
-    //         return "Erro ao excluir contato: " . $stmt->error;
-    //     }
-    // }
+        return $contacts;
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 }
+
+public function deleteContact($contactId)
+    {
+        // var_dump('oi');die();
+        try {
+            // $stmt = $this->pdo->prepare("UPDATE contacts SET deleted = 1 WHERE id = :id");
+            $stmt = $this->pdo->prepare("DELETE FROM contacts WHERE id = :id");
+            $stmt->bindParam(':id', $contactId);
+            $stmt->execute();
+
+            $contacts = $this->getAllContacts();
+            
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['error' => 'Erro ao excluir contato: ' . $e->getMessage()];
+        }
+    }
+
+
+    public function updateContact($contactId, $name, $email, $phone, $street, $city, $state, $cep)
+{
+    try {
+        $stmt = $this->pdo->prepare("UPDATE contacts SET 
+            name = :name, 
+            email = :email, 
+            phones = :phone, 
+            street = :street, 
+            city = :city, 
+            state = :state, 
+            cep = :cep 
+            WHERE id = :id");
+
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':street', $street);
+        $stmt->bindParam(':city', $city);
+        $stmt->bindParam(':state', $state);
+        $stmt->bindParam(':cep', $cep);
+        $stmt->bindParam(':id', $contactId);
+
+        $stmt->execute();
+
+        return ['success' => true];
+    } catch (Exception $e) {
+        return ['error' => 'Erro ao atualizar contato: ' . $e->getMessage()];
+    }
+}
+
+
+}
+
+

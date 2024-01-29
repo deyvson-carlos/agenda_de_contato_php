@@ -1,8 +1,4 @@
 <template>
-  <ContactEdit
-    :formData="editedContact"
-    @contactUpdated="handleContactUpdated"
-  />
   <div>
     <nav
       class="navbar navbar-expand-lg navbar-dark"
@@ -46,10 +42,10 @@
           <h2 class="mb-4">Lista de Contatos</h2>
 
           <th>
-            <button class="btn btn-link" @click="toggleSortOrder">
-              {{ sortOrder === "asc" ? "Ordenar A-Z" : "Ordenar Z-A" }}
-            </button>
-          </th>
+  <button class="btn btn-link" @click="toggleSortOrder">
+    {{ sortOrder === 'asc' ? 'Ordenar A-Z' : 'Ordenar Z-A' }}
+  </button>
+</th>
 
           <div class="mb-3 d-flex justify-content-between align-items-center">
             <router-link to="/contactform" class="btn btn-primary"
@@ -94,17 +90,16 @@
                 <td>{{ contact.cep }}</td>
                 <td>
                   <div class="btn-group" role="group">
-                    <router-link
-                      :to="{ name: 'editContact', params: { id: contact.id } }"
+                    <button
+                      @click="editContact(contact)"
                       class="btn btn-info btn-sm"
                       style="margin-right: 5px"
                     >
                       Editar
-                    </router-link>
+                    </button>
                     <button
-                      @click="deleteContact(contact.id)"
-                      class="btn btn-danger"
-                    >
+                    @click="deleteContact(contact.id)" class="btn btn-danger">
+                 
                       Excluir
                     </button>
                   </div>
@@ -136,6 +131,7 @@
               </li>
             </ul>
           </nav>
+
         </div>
       </div>
     </div>
@@ -154,8 +150,7 @@ export default {
   data() {
     return {
       contacts: [],
-      editedContact: null,
-      sortOrder: "asc",
+      sortOrder: 'asc',
       currentPage: 1,
       itemsPerPage: 10,
       formData: {
@@ -171,10 +166,7 @@ export default {
       return this.contacts.slice(startIndex, endIndex);
     },
     totalPageArray() {
-      return Array.from(
-        { length: Math.ceil(this.contacts.length / this.itemsPerPage) },
-        (_, index) => index + 1
-      );
+      return Array.from({ length: Math.ceil(this.contacts.length / this.itemsPerPage) }, (_, index) => index + 1);
     },
     totalPages() {
       return Math.ceil(this.contacts.length / this.itemsPerPage);
@@ -198,58 +190,42 @@ export default {
 
   methods: {
     editContact(contact) {
-      // Navegue para a página de edição passando o ID do contato como parâmetro
-      this.$router.push({ name: "contactEdit", params: { id: contact.id } });
-    },
-
-    handleContactUpdated(updatedContact) {
-      // Atualizar a lista de contatos após a edição
-      const index = this.contacts.findIndex(contact => contact.id === updatedContact.id);
-      if (index !== -1) {
-        // Substituir o contato antigo pelo atualizado
-        this.contacts.splice(index, 1, updatedContact);
-      }
-      // Limpar o contato editado
-      this.editedContact = null;
+      // Lógica para editar o contato (pode redirecionar para uma página de edição, por exemplo)
+      console.log("Editar contato:", contact);
     },
 
     deleteContact(contactId) {
-      console.log("Marcar contato como excluído com ID:", contactId);
+  console.log("Marcar contato como excluído com ID:", contactId);
 
-      fetch(`http://localhost:8000/backend/contactController/${contactId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `Erro ao marcar contato como excluído: ${response.statusText}`
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Contato marcado como excluído com sucesso:", data);
-
-          // Verifique se 'data.contacts' está definido
-          if (data.contacts !== undefined) {
-            // Atualizar a lista de contatos após a marcação como excluído
-            this.contacts = data.contacts;
-            console.log("Lista de contatos atualizada:", this.contacts);
-          } else {
-            console.warn(
-              "A propriedade 'contacts' não está presente em 'data'.",
-              data
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Erro ao marcar contato como excluído:", error.message);
-        });
+  fetch(`http://localhost:8000/backend/contactController/${contactId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify({}),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Erro ao marcar contato como excluído: ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log("Contato marcado como excluído com sucesso:", data);
+
+    // Verifique se 'data.contacts' está definido
+    if (data.contacts !== undefined) {
+      // Atualizar a lista de contatos após a marcação como excluído
+      this.contacts = data.contacts;
+      console.log("Lista de contatos atualizada:", this.contacts);
+    } else {
+      console.warn("A propriedade 'contacts' não está presente em 'data'.", data);
+    }
+  })
+  .catch(error => {
+    console.error("Erro ao marcar contato como excluído:", error.message);
+  });
+},
 
     prevPage() {
       if (this.currentPage > 1) {
@@ -265,19 +241,18 @@ export default {
       }
     },
     toggleSortOrder() {
-      this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
       this.sortContacts();
     },
     sortContacts() {
       this.contacts.sort((a, b) => {
         const nameA = a.name.toUpperCase();
         const nameB = b.name.toUpperCase();
-        return this.sortOrder === "asc"
-          ? nameA.localeCompare(nameB)
-          : nameB.localeCompare(nameA);
+        return this.sortOrder === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
       });
     },
     // ... (outros métodos) ...
   },
 };
 </script>
+
