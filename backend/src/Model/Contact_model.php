@@ -76,6 +76,7 @@ class Contact_model
         }
     }
 
+<<<<<<< HEAD
     public function deleteContact($contactId)
     {
         try {
@@ -120,5 +121,70 @@ class Contact_model
         } catch (Exception $e) {
             return ['error' => 'Erro ao atualizar contato: ' . $e->getMessage()];
         }
+=======
+    public function getAllContacts()
+{
+    try {
+        $stmt = $this->pdo->prepare("SELECT * FROM contacts");
+        $stmt->execute();
+        $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $contacts;
+    } catch (Exception $e) {
+        return $e->getMessage();
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
     }
 }
+
+public function deleteContact($contactId)
+    {
+        // var_dump('oi');die();
+        try {
+            // $stmt = $this->pdo->prepare("UPDATE contacts SET deleted = 1 WHERE id = :id");
+            $stmt = $this->pdo->prepare("DELETE FROM contacts WHERE id = :id");
+            $stmt->bindParam(':id', $contactId);
+            $stmt->execute();
+
+            $contacts = $this->getAllContacts();
+            
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['error' => 'Erro ao excluir contato: ' . $e->getMessage()];
+        }
+    }
+
+
+    public function updateContact($contactId, $name, $email, $phone, $street, $city, $state, $cep)
+{
+    try {
+        $stmt = $this->pdo->prepare("UPDATE contacts SET 
+            name = :name, 
+            email = :email, 
+            phones = :phone, 
+            street = :street, 
+            city = :city, 
+            state = :state, 
+            cep = :cep 
+            WHERE id = :id");
+
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':street', $street);
+        $stmt->bindParam(':city', $city);
+        $stmt->bindParam(':state', $state);
+        $stmt->bindParam(':cep', $cep);
+        $stmt->bindParam(':id', $contactId);
+
+        $stmt->execute();
+
+        return ['success' => true];
+    } catch (Exception $e) {
+        return ['error' => 'Erro ao atualizar contato: ' . $e->getMessage()];
+    }
+}
+
+
+}
+
+

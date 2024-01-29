@@ -116,6 +116,10 @@
             </div>
           </div>
 
+<<<<<<< HEAD
+=======
+          <!-- Adicione um botão de envio -->
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
           <button type="submit" class="btn btn-primary mt-3">
             Salvar Alterações
           </button>
@@ -130,6 +134,7 @@ export default {
   data() {
     return {
       formData: {
+<<<<<<< HEAD
         name: "", 
         email: "",
         phones: [],
@@ -138,6 +143,16 @@ export default {
       },
       phoneInput: "", 
       
+=======
+        name: "", // Inicialize os campos com valores vazios
+        email: "",
+        phones: [],
+        street: "",
+        // Adicione outros campos conforme necessário
+      },
+      phoneInput: "", // Inicialize a entrada do telefone como vazia
+      // Adicione outras propriedades conforme necessário
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
     };
   },
   methods: {
@@ -157,14 +172,25 @@ export default {
 
     const updatedContact = await response.json();
 
+<<<<<<< HEAD
     this.$emit('contactUpdated', updatedContact);
 
+=======
+    // Emitir um evento para o componente pai
+    this.$emit('contactUpdated', updatedContact);
+
+    // Redirecionar de volta à lista de contatos
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
     this.$router.push('/contactlist');
   } catch (error) {
     console.error('Erro ao atualizar contato:', error.message);
   }
 },
 
+<<<<<<< HEAD
+=======
+  // ... restante do código
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
 }
 };
 </script>

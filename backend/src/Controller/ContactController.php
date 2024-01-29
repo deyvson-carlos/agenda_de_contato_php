@@ -1,5 +1,7 @@
 <?php
 
+// ContactController.php
+
 namespace agenda_de_contato_php\Controller;
 
 use Model\Contact_model\Contact_model;
@@ -27,6 +29,10 @@ class ContactController
         return $contacts;
     }
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> 652ae1aa194dc287671180a17a796df4145a4333
     public function deleteContact($contactId)
     {
         
