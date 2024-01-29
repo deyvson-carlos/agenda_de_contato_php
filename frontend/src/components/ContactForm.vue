@@ -158,6 +158,7 @@
                   Salvar Contato
                 </button>
               </div>
+
             </div>
           </form>
         </div>
@@ -189,6 +190,7 @@ export default {
         currentYear: new Date().getFullYear(),
       },
       phoneInput: "",
+      errorMessage: null,
     };
   },
   methods: {
@@ -218,7 +220,7 @@ export default {
       this.formData.phones.splice(index, 1);
     },
     restrictToNumbers() {
-      // Remova caracteres não numéricos em tempo real enquanto o usuário digita
+      
       this.phoneInput = this.phoneInput.replace(/\D/g, "");
     },
 
@@ -234,7 +236,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          // Após salvar com sucesso, navegue para a página ContactList manualmente
+          
           this.$router.push("/contactlist");
         })
         .catch((error) => {
